@@ -4,26 +4,29 @@ import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import { TransformControls } from 'three/examples/jsm/controls/TransformControls.js'
 import { DecalGeometry } from 'three/examples/jsm/geometries/DecalGeometry.js'
-import { createColorPicker } from './colorPicker.js'
+import { createColorPicker } from './sidebar.js'
 
 // Set up the scene
 const scene = new THREE.Scene()
 scene.background = new THREE.Color(0x1a1a1a)
 
 // Set up the camera
+// Set up the camera
+const container = document.querySelector('#app')
 const camera = new THREE.PerspectiveCamera(
   75,
-  window.innerWidth / window.innerHeight,
+  window.innerWidth / window.innerHeight, // Initial aspect ratio, will be updated
   0.1,
   1000
 )
 camera.position.set(0, 0, 5)
 
 // Set up the renderer
+// Set up the renderer
 const renderer = new THREE.WebGLRenderer({ antialias: true })
-renderer.setSize(window.innerWidth, window.innerHeight)
+renderer.setSize(container.clientWidth, container.clientHeight)
 renderer.shadowMap.enabled = true
-document.querySelector('#app').appendChild(renderer.domElement)
+container.appendChild(renderer.domElement)
 
 // Add orbit controls for interaction
 const controls = new OrbitControls(camera, renderer.domElement)
@@ -649,8 +652,10 @@ window.addEventListener('keydown', (event) => {
 })
 
 // Handle window resize
+// Handle window resize
 window.addEventListener('resize', () => {
-  camera.aspect = window.innerWidth / window.innerHeight
+  const container = document.querySelector('#app')
+  camera.aspect = container.clientWidth / container.clientHeight
   camera.updateProjectionMatrix()
-  renderer.setSize(window.innerWidth, window.innerHeight)
+  renderer.setSize(container.clientWidth, container.clientHeight)
 })
